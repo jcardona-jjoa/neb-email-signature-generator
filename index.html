@@ -299,7 +299,9 @@ const ROSTER = [
     <div class="btnrow" style="margin:12px 0 0">
       <button type="button" class="btn quiet" id="savePng">Save as PNG</button>
       <button type="button" class="btn quiet" id="saveJpg">Save as JPG</button>
+      <button type="button" class="btn quiet" id="savePrint">Save for printing</button>
     </div>
+    <p class="lede" id="sizeNote" style="margin:10px 0 0"></p>
     <div id="saveMsg"></div>
   </div>
 
@@ -554,7 +556,32 @@ function exportSrc(url){
   return SETUP.exportBase + url.split('/').pop();
 }
 
-async function signatureCanvas(m, scale, useCors){
+/* One source of truth for the drawn layout, so the canvas and the
+   signature HTML cannot drift apart. */
+function metrics(m){
+  const rows = [];
+  if(m.email)       rows.push(['mail',  m.email]);
+  if(m.phone)       rows.push(['phone', m.phone]);
+  if(SETUP.website) rows.push(['globe', SETUP.website]);
+
+  const TOPPAD = 8;
+  const textH = TOPPAD + (19+2) + (14+5) + (15+7) + rows.length*20 + (8+15+7) + 16;
+  const row1H = PHOTO_CELL;
+  const row2H = Math.max(textH, LOGO_W);
+  return { rows, TOPPAD, row1H, row2H, H: row1H + row2H };
+}
+
+/* Members without a phone number produce a shorter signature. Every
+   picture is padded out to the tallest so the seven are a matched set. */
+function tallest(){
+  return Math.max.apply(null, ROSTER.map(m => metrics(m).H));
+}
+
+async function signatureCanvas(m, opts){
+  const scale = opts.scale || 1;
+  const pad   = opts.pad || 0;
+  const useCors = opts.useCors;
+
   const [photoImg, sealImg, scriptImg] = await Promise.all([
     m.headshot ? loadImg(exportSrc(m.headshot), useCors) : null,
     SETUP.logo ? loadImg(exportSrc(SETUP.logo), useCors) : null,
@@ -567,24 +594,17 @@ async function signatureCanvas(m, scale, useCors){
     ? fitBox({w:scriptImg.naturalWidth, h:scriptImg.naturalHeight}, SCRIPT_H, SCRIPT_CELL, 4.7)
     : null;
 
-  const rows = [];
-  if(m.email)       rows.push(['mail',  m.email]);
-  if(m.phone)       rows.push(['phone', m.phone]);
-  if(SETUP.website) rows.push(['globe', SETUP.website]);
-
-  const TOPPAD = 8;
-  const textH = TOPPAD + (19+2) + (14+5) + (15+7) + rows.length*20 + (8+15+7) + 16;
-  const row1H = PHOTO_CELL;
-  const row2H = Math.max(textH, LOGO_W);
-  const H = row1H + row2H;
+  const { rows, TOPPAD, row1H, row2H } = metrics(m);
+  const H = opts.fixedH || (row1H + row2H);
 
   const c = document.createElement('canvas');
-  c.width = WIDTH * scale;
-  c.height = H * scale;
+  c.width  = (WIDTH + pad*2) * scale;
+  c.height = (H + pad*2) * scale;
   const g = c.getContext('2d');
   g.scale(scale, scale);
   g.fillStyle = '#ffffff';
-  g.fillRect(0, 0, WIDTH, H);
+  g.fillRect(0, 0, WIDTH + pad*2, H + pad*2);
+  g.translate(pad, pad);
   g.textBaseline = 'middle';
 
   /* headshot, circular, top left */
@@ -650,18 +670,32 @@ function saveMsg(html){
   $('saveMsg').innerHTML = html ? `<div class="note">${html}</div>` : '';
 }
 
-async function exportImage(kind){
+/* Two sizes, because they are for different jobs.
+
+   "email"  -- drawn at natural size, so if somebody pastes the picture
+               straight into their signature it lands at exactly the same
+               dimensions as the real HTML signature rather than at double.
+   "print"  -- 3x with a margin, for slides and printed programmes. */
+const EXPORT_SIZES = {
+  email: { scale: 1, pad: 0,  suffix: ''       },
+  print: { scale: 3, pad: 16, suffix: '_print' }
+};
+
+async function exportImage(kind, size){
   saveMsg('');
   toast('Building the image…');
 
+  const cfg  = EXPORT_SIZES[size] || EXPORT_SIZES.email;
   const mime = kind === 'jpg' ? 'image/jpeg' : 'image/png';
-  const name = `fullsignature_image_${slug(current.name)}_${slug(current.title)}.${kind}`;
+  const name = `fullsignature_image_${slug(current.name)}_${slug(current.title)}${cfg.suffix}.${kind}`;
 
   let canvas;
   try{
     /* crossOrigin lets the canvas stay exportable, but only if the image
        host allows it */
-    canvas = await signatureCanvas(current, 2, true);
+    canvas = await signatureCanvas(current, {
+      scale: cfg.scale, pad: cfg.pad, fixedH: tallest(), useCors: true
+    });
   }catch(err){
     /* Work out which problem it is: a file that genuinely is not there,
        or a file that loads fine but will not be shared cross-origin. */
@@ -739,8 +773,14 @@ async function copyRich(){
   sel.addEventListener('change', e => { current = ROSTER[+e.target.value]; render(); });
 
   $('copyRich').addEventListener('click', copyRich);
-  $('savePng').addEventListener('click', () => exportImage('png'));
-  $('saveJpg').addEventListener('click', () => exportImage('jpg'));
+  $('savePng').addEventListener('click', () => exportImage('png', 'email'));
+  $('saveJpg').addEventListener('click', () => exportImage('jpg', 'email'));
+  $('savePrint').addEventListener('click', () => exportImage('png', 'print'));
+
+  const h = tallest(), p = EXPORT_SIZES.print;
+  $('sizeNote').textContent =
+    `PNG and JPG save at ${WIDTH} × ${h} pixels, the same size as the signature itself. `
+    + `Save for printing gives a larger ${(WIDTH + p.pad*2) * p.scale} × ${(h + p.pad*2) * p.scale} version.`;
 
   render();
 })();
