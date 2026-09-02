@@ -334,8 +334,15 @@ const PHOTO_BD  = 3;
 const SCRIPT_H  = 56;
 
 const PHOTO_CELL = PHOTO + PHOTO_BD * 2;          /* 102 */
-const PHOTO_COL  = PHOTO_CELL + GUTTER;           /* 114 - headshot, top left */
-const SCRIPT_CELL= WIDTH - PHOTO_COL;             /* 306 - script name beside it */
+
+/* No gutter between the headshot and the name. The name PNGs are canvas
+   renders with roughly 60px of transparent padding baked into their left
+   edge, which lands as about 12px on screen once scaled -- that is the
+   gap. Adding a gutter on top of it read as a hole. Trimming that padding
+   out of the seven PNGs would close it entirely. */
+const SCRIPT_GAP = 0;
+const PHOTO_COL  = PHOTO_CELL + SCRIPT_GAP;       /* 102 - headshot, top left */
+const SCRIPT_CELL= WIDTH - PHOTO_COL;             /* 318 - name beside it */
 
 /* The seal was floating on its own out at the right edge. Narrowing the
    whole block and widening the seal closes the gap: the text column now
@@ -458,7 +465,7 @@ async function buildSignature(m){
 
       <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="${WIDTH}" style="width:${WIDTH}px;border-collapse:collapse;">
         <tr>
-          <td width="${PHOTO_COL}" valign="middle" style="padding:0 ${GUTTER}px 0 0;">${photo}</td>
+          <td width="${PHOTO_COL}" valign="middle" style="padding:0 ${SCRIPT_GAP}px 0 0;">${photo}</td>
           <td width="${SCRIPT_CELL}" valign="middle" align="left" style="padding:0;">${scriptBlock(m, scriptBox)}</td>
         </tr>
       </table>
