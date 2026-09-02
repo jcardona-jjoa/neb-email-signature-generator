@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My Jack and Jill Email Signature</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Great+Vibes&display=swap" rel="stylesheet">
+
+<script>
+/* ==================================================================
+   SETUP  --  maintainer notes, not shown anywhere on the page.
+
+   iconBase must stay pointing at a folder of hosted icons and must end
+   with a slash. If it is ever blanked out, the icons fall back to being
+   embedded in the signature itself, which Gmail strips and Outlook for
+   Windows cannot read -- the signature will look broken for everyone.
+
+   The seal (logo, below) is on a different subdomain to everything
+   else. Moving it alongside the icons on www.jackandjillinc.org is
+   worth doing: it is what stops the Save as PNG / JPG buttons working.
+================================================================== */
+
+const SETUP = {
+
+  iconBase: 'https://www.jackandjillinc.org/wp-content/uploads/',
+
+  logo: 'https://requestcentral.jackandjillinc.org/wp-content/uploads/2026/04/JJOA_Logo_signature.jpeg',
+
+  website:  'www.jackandjillinc.org',
+  hashtags: '#jackandjillinc   #thepowerofus   #jjwegotus',
+
+  scriptFont: 'Alex Brush'
+};
+
+/* ------------------------------------------------------------------
+   THE BOARD
+
+   NOTE: offices and email addresses were carried over from the
+   original build, where they were flagged as unconfirmed predictions
+   based on the office-code pattern. Verify every address against the
+   live mailboxes before rolling this out.
+------------------------------------------------------------------ */
+
+const ROSTER = [
+  { name:'Deidre S. Lindsey', creds:'PharmD, MBA', title:'National President',
+    email:'npdeidre@jackandjillinc.org',    phone:'317-414-1208',
+    headshot:'https://www.jackandjillinc.org/wp-content/uploads/26-28-NEB-NP.png',
+    script:'https://www.jackandjillinc.org/wp-content/uploads/Deidre_S_Lindsey.png' },
+
+  { name:'Fatimah Moody',     creds:'',            title:'National Vice President',
+    email:'nvpfatimah@jackandjillinc.org',  phone:'',
+    headshot:'https://www.jackandjillinc.org/wp-content/uploads/26-28-NEB-NVP.png',
+    script:'https://www.jackandjillinc.org/wp-content/uploads/Fatimah_Moody.png' },
+
+  { name:'Jennifer Jackson',  creds:'',            title:'National Treasurer',
+    email:'ntjennifer@jackandjillinc.org',  phone:'409-963-5441',
+    headshot:'https://www.jackandjillinc.org/wp-content/uploads/26-28-NEB-NT.png',
+    script:'https://www.jackandjillinc.org/wp-content/uploads/Jennifer_Jackson.png' },
+
+  { name:'Tasha B. Penny',    creds:'',            title:'National Program Director',
+    email:'npdtasha@jackandjillinc.org',    phone:'323-844-2369',
+    headshot:'https://www.jackandjillinc.org/wp-content/uploads/26-28-NEB-NPD.png',
+    script:'https://www.jackandjillinc.org/wp-content/uploads/Tasha_B_Penny.png' },
+
+  { name:'Latrecia Jordan',   creds:'',            title:'National Recording Secretary',
+    email:'nrslatrecia@jackandjillinc.org', phone:'615-424-4753',
+    headshot:'https://www.jackandjillinc.org/wp-content/uploads/26-28-NEB-NRS.png',
+    script:'https://www.jackandjillinc.org/wp-content/uploads/Latrecia_Jordan.png' },
+
+  { name:'Dr. Aimy Steele',   creds:'',            title:'National Corresponding Secretary',
+    email:'ncsaimy@jackandjillinc.org',     phone:'980-521-6132',
+    headshot:'https://www.jackandjillinc.org/wp-content/uploads/26-28-NEB-NCS.png',
+    script:'https://www.jackandjillinc.org/wp-content/uploads/Aimy_Steele.png' },
+
+  { name:'Jon Porter',        creds:'',            title:'National Editor',
+    email:'nejon@jackandjillinc.org',       phone:'913-777-8009',
+    headshot:'https://www.jackandjillinc.org/wp-content/uploads/26-28-NEB-NE.png',
+    script:'https://www.jackandjillinc.org/wp-content/uploads/Jon_Porter.png' }
+];
+
+/* ================ nothing below here needs editing ================ */
+</script>
+
+<style>
+  :root{
+    --pink:#c2185b; --ink:#1c2430; --muted:#5f6368; --line:#e2e6ec; --bg:#f5f6f8;
+    --amber:#7a4f00; --amber-bg:#fdf6e4; --amber-line:#f0dfb0;
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;
+  }
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px;background:rgba(0,0,0,.06);padding:1px 5px;border-radius:3px}
+  .shell{max-width:820px;margin:0 auto;padding:0 20px 60px}
+
+  header{padding:44px 0 26px;text-align:center}
+  .eyebrow{font-size:10px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;
+    color:var(--pink);margin:0 0 10px}
+  header h1{margin:0;font-size:26px;font-weight:700;letter-spacing:-.015em}
+  header p{margin:10px 0 0;color:var(--muted)}
+
+  .card{background:#fff;border:1px solid var(--line);border-radius:8px;padding:24px;margin:0 0 20px}
+  .step{display:flex;gap:14px;align-items:flex-start}
+  .stepnum{flex:0 0 26px;height:26px;border-radius:50%;background:var(--pink);color:#fff;
+    font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:2px}
+  .step h2{margin:0 0 4px;font-size:16px;font-weight:700}
+  .step .body{flex:1;min-width:0}
+
+  label.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  select{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:5px;
+    font:inherit;font-size:15px;background:#fff;color:var(--ink)}
+  select:focus-visible,button:focus-visible,summary:focus-visible{
+    outline:2px solid var(--pink);outline-offset:2px}
+
+  .btn{display:inline-block;padding:12px 22px;border:1px solid var(--pink);border-radius:5px;
+    background:var(--pink);color:#fff;font:inherit;font-size:15px;font-weight:600;cursor:pointer}
+  .btn:hover{background:#a51349;border-color:#a51349}
+  .btn[disabled]{opacity:.5;cursor:default}
+  .btn.small{padding:8px 14px;font-size:13px}
+  .btn.quiet{background:#fff;color:var(--ink);border-color:var(--line)}
+  .btn.quiet:hover{background:var(--bg)}
+  .btnrow{display:flex;flex-wrap:wrap;gap:10px}
+
+  .frame{border:1px solid var(--line);border-radius:6px;padding:20px;overflow-x:auto;background:#fff;margin:12px 0 0}
+  iframe.preview{width:100%;min-width:440px;border:0;display:block}
+
+  .lede{margin:0 0 4px;font-size:14px;color:var(--muted)}
+  h2.plain{margin:0 0 4px;font-size:16px;font-weight:700}
+
+  .client{padding:16px 0 0;margin:16px 0 0;border-top:1px solid var(--line)}
+  .client h3{margin:0 0 8px;font-size:14px;font-weight:700}
+  .client ol{margin:0;padding-left:20px;font-size:14px;color:var(--muted)}
+  .client ol li{margin:0 0 5px}
+  .client ol li:last-child{margin-bottom:0}
+  .client b{color:var(--ink);font-weight:600}
+
+  .note{background:var(--amber-bg);border:1px solid var(--amber-line);color:var(--amber);
+    border-radius:5px;padding:12px 14px;font-size:13.5px;margin:0 0 16px}
+  .note.ok{background:#eef8f1;border-color:#c6e6d1;color:#1f6b3d}
+  .note b{font-weight:700}
+
+  details.setup{margin:34px 0 0;border-top:1px solid var(--line);padding:20px 0 0}
+  details.setup summary{cursor:pointer;font-size:11px;font-weight:700;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--muted)}
+  .setup .card{margin-top:18px}
+  .setup h3{margin:0 0 6px;font-size:14px;font-weight:700}
+  .setup p{margin:0 0 14px;font-size:13.5px;color:var(--muted)}
+
+  .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(14px);
+    background:var(--ink);color:#fff;padding:12px 20px;border-radius:5px;font-size:14px;
+    opacity:0;pointer-events:none;transition:opacity .18s,transform .18s;z-index:50}
+  .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+  @media (prefers-reduced-motion:reduce){.toast{transition:none}}
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+  <header>
+    <p class="eyebrow">Jack and Jill of America, Incorporated</p>
+    <h1>Your National Executive Board email signature</h1>
+    <p>Choose your name, copy your signature, and paste it into your email settings.
+       It takes about two minutes.</p>
+  </header>
+
+  <div class="card">
+    <div class="step">
+      <div class="stepnum">1</div>
+      <div class="body">
+        <h2>Select your name</h2>
+        <label class="sr" for="preset">Board member</label>
+        <select id="preset"></select>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="step">
+      <div class="stepnum">2</div>
+      <div class="body">
+        <h2>Check your details</h2>
+        <p class="lede">Your photo, title, email address and phone number should all be
+           correct. If anything needs updating, let us know before you install it.</p>
+        <div class="frame">
+          <iframe class="preview" id="preview" title="Signature preview"></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="step">
+      <div class="stepnum">3</div>
+      <div class="body">
+        <h2>Copy it into your email</h2>
+        <div class="btnrow" style="margin:12px 0 14px">
+          <button type="button" class="btn" id="copyRich" disabled>Copy my signature</button>
+        </div>
+
+        <div class="note">
+          <b>When you paste, use the ordinary paste command.</b><br>
+          That is <b>Ctrl</b>+<b>V</b> on Windows, or <b>Command</b>+<b>V</b> on a Mac.
+          Do not use "paste as plain text" (Ctrl+Shift+V or Command+Shift+V), and do not
+          paste into Notepad, TextEdit or Word along the way. Any of those will strip out
+          your photo, the seal and the formatting, and leave you with plain text.
+        </div>
+
+        <div class="client">
+          <h3>Outlook on a Windows computer</h3>
+          <ol>
+            <li>Go to <b>File</b>, then <b>Options</b>, then <b>Mail</b>, then <b>Signatures</b>.</li>
+            <li>Click <b>New</b> and give it a name, such as "Jack and Jill".</li>
+            <li>Click inside the large <b>Edit signature</b> box and press <b>Ctrl</b>+<b>V</b>.</li>
+            <li>If a small <b>Paste Options</b> button appears, choose <b>Keep Source Formatting</b>.</li>
+            <li>On the right, set the signature for <b>New messages</b> and for <b>Replies/forwards</b>.</li>
+            <li>Click <b>OK</b>.</li>
+          </ol>
+        </div>
+
+        <div class="client">
+          <h3>Outlook on the web, or the new Outlook for Windows</h3>
+          <ol>
+            <li>Click the <b>settings gear</b> at the top right, then <b>Mail</b>, then <b>Compose and reply</b>.</li>
+            <li>Click inside the <b>Email signature</b> box and press <b>Ctrl</b>+<b>V</b>.</li>
+            <li>Underneath, select your signature for new messages and for replies.</li>
+            <li>Click <b>Save</b>. It will not keep your signature until you do.</li>
+          </ol>
+        </div>
+
+        <div class="client">
+          <h3>Outlook on a Mac</h3>
+          <ol>
+            <li>Open the <b>Outlook</b> menu, then <b>Settings</b>, then <b>Signatures</b>.</li>
+            <li>Click <b>+</b> to add a signature and give it a name.</li>
+            <li>Click inside the editing area and press <b>Command</b>+<b>V</b>.</li>
+            <li>Close the window, then choose your signature under <b>Choose default signature</b>.</li>
+          </ol>
+        </div>
+
+        <div class="client">
+          <h3>Gmail</h3>
+          <ol>
+            <li>Click the <b>settings gear</b>, then <b>See all settings</b>.</li>
+            <li>On the <b>General</b> tab, scroll down to <b>Signature</b> and click <b>Create new</b>.</li>
+            <li>Give it a name, click into the box on the right, and press <b>Ctrl</b>+<b>V</b>
+                (<b>Command</b>+<b>V</b> on a Mac).</li>
+            <li>Under <b>Signature defaults</b>, select it for new emails and for replies.</li>
+            <li>Scroll to the very bottom of the page and click <b>Save Changes</b>.
+                Gmail will not keep it otherwise.</li>
+          </ol>
+        </div>
+
+        <div class="client">
+          <h3>iPhone and iPad</h3>
+          <ol>
+            <li>Apple Mail usually strips the formatting when you paste directly, so set it
+                up on a computer first.</li>
+            <li>Send yourself an email using your new signature.</li>
+            <li>On your phone, open that email, select the whole signature and copy it.</li>
+            <li>Go to <b>Settings</b>, then <b>Apps</b>, then <b>Mail</b>, then <b>Signature</b>,
+                and paste it in.</li>
+          </ol>
+        </div>
+
+        <div class="client">
+          <h3>If your photo or the seal does not appear</h3>
+          <ol>
+            <li>Many email apps hide images until you allow them. Click <b>Download pictures</b>
+                or <b>Show images</b> if you see that prompt.</li>
+            <li>People you write to may see the same prompt on their end. Your name, title and
+                contact details still show either way.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2 class="plain">Need a picture of your signature?</h2>
+    <p class="lede">If you need an image of your signature for a slide, a printed
+       document or an approval, you can save one here. This is not for your email
+       signature &mdash; in a picture the email address, phone number and social
+       links stop being clickable.</p>
+    <div class="btnrow" style="margin:12px 0 0">
+      <button type="button" class="btn quiet" id="savePng">Save as PNG</button>
+      <button type="button" class="btn quiet" id="saveJpg">Save as JPG</button>
+    </div>
+    <div id="saveMsg"></div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+const FONT = "Arial,'Helvetica Neue',Helvetica,sans-serif";
+
+/* Contrast-corrected palette. Every colour below clears WCAG AA (4.5:1)
+   on white; the originals ranged from 2.0:1 to 3.9:1. */
+const GRAY       = '#5f6368';   /* was #808285  3.85:1 */
+const GRAY_SOFT  = '#64686d';   /* was #8e9093  3.20:1 */
+const C_NAME     = '#b84a76';   /* was #f0a0c3  2.00:1 */
+const C_TITLE    = '#12729f';   /* was #29b4e8  2.39:1 */
+const SCRIPT_COLOR = '#1450a0';
+
+/* Geometry. The original was 600x300; a signature that tall doubles up
+   on every reply in a thread. These numbers sum exactly to WIDTH so
+   Outlook has no leftover pixels to distribute on its own. */
+const WIDTH     = 420;
+const LOGO_W    = 92;
+const GUTTER    = 12;
+const PHOTO     = 96;
+const PHOTO_BD  = 3;
+const SCRIPT_H  = 56;
+
+const PHOTO_CELL = PHOTO + PHOTO_BD * 2;          /* 102 */
+const PHOTO_COL  = PHOTO_CELL + GUTTER;           /* 114 - headshot, top left */
+const SCRIPT_CELL= WIDTH - PHOTO_COL;             /* 306 - script name beside it */
+
+/* The seal was floating on its own out at the right edge. Narrowing the
+   whole block and widening the seal closes the gap: the text column now
+   ends close to where the longest line actually ends, and the seal is
+   big enough to read as the counterweight to the headshot rather than a
+   stray mark. Text content gets 288px, comfortably clear of the longest
+   line ("JACK AND JILL OF AMERICA, INCORPORATED", about 255px). */
+const SEAL_COL   = 120;
+const TEXT_CELL  = WIDTH - SEAL_COL;              /* 300 */
+
+const ICON_FILES = {
+  mail:'sig-mail.png', phone:'sig-phone.png', globe:'sig-globe.png',
+  facebook:'sig-facebook.png', instagram:'sig-instagram.png', linkedin:'sig-linkedin.png'
+};
+
+const ICONS = {
+  mail: 'data:image/png;base64,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',
+  phone: 'data:image/png;base64,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',
+  globe: 'data:image/png;base64,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',
+  facebook: 'data:image/png;base64,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',
+  instagram: 'data:image/png;base64,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',
+  linkedin: 'data:image/png;base64,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'
+};
+
+const SOCIAL = [
+  { key:'facebook',  url:'https://www.facebook.com/jackandjillinc/' },
+  { key:'instagram', url:'https://www.instagram.com/jackandjillinc/' },
+  { key:'linkedin',  url:'https://www.linkedin.com/company/jack-and-jill-of-america-incorporated/' }
+];
+
+function iconSrc(k){
+  if(SETUP.iconBase && ICON_FILES[k]) return SETUP.iconBase + ICON_FILES[k];
+  return ICONS[k];
+}
+
+/* ---------- image measuring ----------
+   Outlook for Windows ignores max-width and is unreliable with
+   width:auto / height:auto. Every <img> therefore needs real width and
+   height attributes, which means knowing each file's true proportions.
+   We measure once, cache, and bake the numbers into the markup. */
+const dimCache = {};
+function measure(url){
+  if(!url) return Promise.resolve(null);
+  if(dimCache[url]) return Promise.resolve(dimCache[url]);
+  return new Promise(res => {
+    const im = new Image();
+    im.onload  = () => { dimCache[url] = {w:im.naturalWidth, h:im.naturalHeight}; res(dimCache[url]); };
+    im.onerror = () => { dimCache[url] = null; res(null); };
+    im.src = url;
+  });
+}
+
+/* fit to a target height, but never exceed a maximum width */
+function fitBox(nat, targetH, maxW, fallbackRatio){
+  const ratio = nat ? nat.w / nat.h : fallbackRatio;
+  let h = targetH, w = Math.round(targetH * ratio);
+  if(w > maxW){ w = maxW; h = Math.round(maxW / ratio); }
+  return {w, h};
+}
+
+/* ---------- the signature ---------- */
+function contactRow(kind, text, href){
+  return `
+              <tr>
+                <td width="24" valign="middle" style="padding:2px 8px 2px 0;">
+                  <img src="${esc(iconSrc(kind))}" width="16" height="16" alt="" border="0" style="display:block;border:0;width:16px;height:16px;-ms-interpolation-mode:bicubic;">
+                </td>
+                <td valign="middle" style="padding:2px 0;font-family:${FONT};font-size:12px;line-height:16px;mso-line-height-rule:exactly;color:${GRAY};"><a href="${esc(href)}" style="color:${GRAY};text-decoration:none;">${esc(text)}</a></td>
+              </tr>`;
+}
+
+function scriptBlock(m, box){
+  if(m.script && box){
+    return `<img src="${esc(m.script)}" width="${box.w}" height="${box.h}" alt="${esc(m.name)}" border="0" style="display:block;border:0;width:${box.w}px;height:${box.h}px;-ms-interpolation-mode:bicubic;">`;
+  }
+  return `<div style="font-family:'${esc(SETUP.scriptFont)}','Segoe Script','Brush Script MT',cursive;font-size:40px;line-height:${SCRIPT_H}px;mso-line-height-rule:exactly;color:${SCRIPT_COLOR};white-space:nowrap;">${esc(m.name)}</div>`;
+}
+
+function socialRow(){
+  const cells = SOCIAL.map(s => `
+                <td style="padding:0 10px 0 0;">
+                  <a href="${esc(s.url)}" style="display:block;"><img src="${esc(iconSrc(s.key))}" width="16" height="16" alt="${esc(s.key)}" border="0" style="display:block;border:0;width:16px;height:16px;-ms-interpolation-mode:bicubic;"></a>
+                </td>`).join('');
+  return `
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
+              <tr>${cells}
+              </tr>
+            </table>`;
+}
+
+async function buildSignature(m){
+  const fullName = m.creds ? `${m.name}, ${m.creds}` : m.name;
+
+  const [logoNat, scriptNat] = await Promise.all([measure(SETUP.logo), measure(m.script)]);
+
+  const logoBox   = fitBox(logoNat,   LOGO_W,   LOGO_W, 1);
+  const scriptBox = m.script ? fitBox(scriptNat, SCRIPT_H, SCRIPT_CELL, 4.7) : null;
+
+  let rows = '';
+  if(m.email)       rows += contactRow('mail',  m.email, 'mailto:' + m.email);
+  if(m.phone)       rows += contactRow('phone', m.phone, 'tel:' + m.phone.replace(/[^\d+]/g,''));
+  if(SETUP.website) rows += contactRow('globe', SETUP.website, 'https://' + SETUP.website.replace(/^https?:\/\//,''));
+
+  /* logo measured to its true proportions rather than height:auto */
+  const logo = SETUP.logo
+    ? `<img src="${esc(SETUP.logo)}" width="${logoBox.w}" height="${logoBox.h}" alt="Jack and Jill of America, Incorporated" border="0" style="display:block;border:0;width:${logoBox.w}px;height:${logoBox.h}px;-ms-interpolation-mode:bicubic;">`
+    : `<div style="width:${LOGO_W}px;height:${LOGO_W}px;border:1px dashed #c9ced6;font-family:${FONT};font-size:10px;line-height:13px;color:#a5acb6;text-align:center;padding:24px 6px 0;">Seal<br>not set</div>`;
+
+  /* border-radius is honoured by Gmail and Outlook on the web; Outlook
+     for Windows drops it and shows a square photo inside the pink
+     border. Baking the circular crop into the PNG is the only way to
+     make it round everywhere. */
+  const photo = m.headshot
+    ? `<img src="${esc(m.headshot)}" width="${PHOTO}" height="${PHOTO}" alt="${esc(m.name)}" border="0" style="display:block;border:${PHOTO_BD}px solid #f5b6d2;border-radius:50%;width:${PHOTO}px;height:${PHOTO}px;-ms-interpolation-mode:bicubic;">`
+    : `<div style="width:${PHOTO}px;height:${PHOTO}px;border:2px dashed #f0c3d8;border-radius:50%;font-family:${FONT};font-size:11px;line-height:14px;color:#c99ab1;text-align:center;padding:38px 8px 0;">Headshot<br>not set</div>`;
+
+  return `<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="${WIDTH}" style="width:${WIDTH}px;border-collapse:collapse;background-color:#ffffff;">
+  <tr>
+    <td style="padding:0;">
+
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="${WIDTH}" style="width:${WIDTH}px;border-collapse:collapse;">
+        <tr>
+          <td width="${PHOTO_COL}" valign="middle" style="padding:0 ${GUTTER}px 0 0;">${photo}</td>
+          <td width="${SCRIPT_CELL}" valign="middle" align="left" style="padding:0;">${scriptBlock(m, scriptBox)}</td>
+        </tr>
+      </table>
+
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="${WIDTH}" style="width:${WIDTH}px;border-collapse:collapse;">
+        <tr>
+          <td width="${TEXT_CELL}" valign="top" style="padding:8px ${GUTTER}px 0 0;">
+
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
+              <tr>
+                <td style="padding:0 0 2px;font-family:${FONT};font-size:15px;font-weight:bold;line-height:19px;mso-line-height-rule:exactly;color:${C_NAME};">${esc(fullName.toUpperCase())}</td>
+              </tr>
+              <tr>
+                <td style="padding:0 0 5px;font-family:${FONT};font-size:11px;font-weight:bold;line-height:14px;mso-line-height-rule:exactly;color:${C_TITLE};">${esc(m.title.toUpperCase())}</td>
+              </tr>
+              <tr>
+                <td style="padding:0 0 7px;font-family:${FONT};font-size:12px;font-weight:bold;line-height:15px;mso-line-height-rule:exactly;color:${GRAY};">JACK AND JILL OF AMERICA, INCORPORATED</td>
+              </tr>
+            </table>
+
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">${rows}
+            </table>
+
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
+              <tr>
+                <td style="padding:8px 0 7px;font-family:${FONT};font-size:11px;line-height:15px;mso-line-height-rule:exactly;color:${GRAY_SOFT};">${esc(SETUP.hashtags)}</td>
+              </tr>
+            </table>
+${socialRow()}
+
+          </td>
+          <td width="${SEAL_COL}" valign="middle" align="left" style="padding:0;">${logo}</td>
+        </tr>
+      </table>
+
+    </td>
+  </tr>
+</table>`;
+}
+
+/* ---------- render ---------- */
+let currentHtml = '';
+let current = ROSTER[0];
+
+async function render(){
+  $('copyRich').disabled = true;
+  currentHtml = await buildSignature(current);
+
+  const frame = $('preview');
+  frame.srcdoc = `<!DOCTYPE html><html><head><meta charset="utf-8">`
+    + `<link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Great+Vibes&display=swap" rel="stylesheet">`
+    + `<style>body{margin:0;background:#fff}</style></head><body>${currentHtml}</body></html>`;
+  frame.onload = () => {
+    try{
+      frame.style.height = (frame.contentDocument.body.scrollHeight + 4) + 'px';
+    }catch(e){
+      frame.style.height = '290px';
+    }
+  };
+  $('copyRich').disabled = false;
+}
+
+/* ---------- downloads ---------- */
+function download(blob, filename){
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 4000);
+}
+
+const slug = s => String(s).toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'');
+
+/* ---------- signature as an image ----------
+   Drawn on a canvas from the same constants the HTML uses, so the two
+   cannot drift apart. The headshot, seal and script name are remote
+   files: the canvas can only be exported if they are readable
+   cross-origin, which they are when this page is served from the same
+   site as the images. */
+function loadImg(src, useCors){
+  return new Promise((res, rej) => {
+    const im = new Image();
+    if(useCors && !/^data:/.test(src)) im.crossOrigin = 'anonymous';
+    im.onload  = () => res(im);
+    im.onerror = () => rej(new Error(String(src)));
+    im.src = src;
+  });
+}
+
+async function signatureCanvas(m, scale, useCors){
+  const [photoImg, sealImg, scriptImg] = await Promise.all([
+    m.headshot ? loadImg(m.headshot, useCors) : null,
+    SETUP.logo ? loadImg(SETUP.logo, useCors) : null,
+    m.script   ? loadImg(m.script,   useCors) : null
+  ]);
+  const icons = {};
+  for(const k of Object.keys(ICON_FILES)) icons[k] = await loadImg(iconSrc(k), useCors);
+
+  const scriptBox = scriptImg
+    ? fitBox({w:scriptImg.naturalWidth, h:scriptImg.naturalHeight}, SCRIPT_H, SCRIPT_CELL, 4.7)
+    : null;
+
+  const rows = [];
+  if(m.email)       rows.push(['mail',  m.email]);
+  if(m.phone)       rows.push(['phone', m.phone]);
+  if(SETUP.website) rows.push(['globe', SETUP.website]);
+
+  const TOPPAD = 8;
+  const textH = TOPPAD + (19+2) + (14+5) + (15+7) + rows.length*20 + (8+15+7) + 16;
+  const row1H = PHOTO_CELL;
+  const row2H = Math.max(textH, LOGO_W);
+  const H = row1H + row2H;
+
+  const c = document.createElement('canvas');
+  c.width = WIDTH * scale;
+  c.height = H * scale;
+  const g = c.getContext('2d');
+  g.scale(scale, scale);
+  g.fillStyle = '#ffffff';
+  g.fillRect(0, 0, WIDTH, H);
+  g.textBaseline = 'middle';
+
+  /* headshot, circular, top left */
+  if(photoImg){
+    const r = PHOTO/2, cx = PHOTO_BD + r, cy = PHOTO_BD + r;
+    g.save();
+    g.beginPath(); g.arc(cx, cy, r, 0, Math.PI*2); g.closePath(); g.clip();
+    g.drawImage(photoImg, PHOTO_BD, PHOTO_BD, PHOTO, PHOTO);
+    g.restore();
+    g.beginPath(); g.arc(cx, cy, r + PHOTO_BD/2, 0, Math.PI*2);
+    g.lineWidth = PHOTO_BD; g.strokeStyle = '#f5b6d2'; g.stroke();
+  }
+
+  /* script name, centred against the headshot */
+  if(scriptImg && scriptBox){
+    g.drawImage(scriptImg, PHOTO_COL, (row1H - scriptBox.h)/2, scriptBox.w, scriptBox.h);
+  }else{
+    g.font = `40px "${SETUP.scriptFont}", cursive`;
+    g.fillStyle = SCRIPT_COLOR;
+    g.fillText(m.name, PHOTO_COL, row1H/2);
+  }
+
+  let y = row1H + TOPPAD;
+  const line = (text, font, colour, lh, pb) => {
+    g.font = font; g.fillStyle = colour;
+    g.fillText(text, 0, y + lh/2);
+    y += lh + pb;
+  };
+
+  const fullName = m.creds ? `${m.name}, ${m.creds}` : m.name;
+  line(fullName.toUpperCase(), 'bold 15px Arial, Helvetica, sans-serif', C_NAME,  19, 2);
+  line(m.title.toUpperCase(),  'bold 11px Arial, Helvetica, sans-serif', C_TITLE, 14, 5);
+  line('JACK AND JILL OF AMERICA, INCORPORATED',
+                               'bold 12px Arial, Helvetica, sans-serif', GRAY,    15, 7);
+
+  g.font = '12px Arial, Helvetica, sans-serif';
+  g.fillStyle = GRAY;
+  for(const [kind, text] of rows){
+    g.drawImage(icons[kind], 0, y + 2, 16, 16);
+    g.fillText(text, 24, y + 10);
+    y += 20;
+  }
+
+  y += 8;
+  g.font = '11px Arial, Helvetica, sans-serif';
+  g.fillStyle = GRAY_SOFT;
+  g.fillText(SETUP.hashtags, 0, y + 7);
+  y += 15 + 7;
+
+  let sx = 0;
+  for(const s of SOCIAL){ g.drawImage(icons[s.key], sx, y, 16, 16); sx += 26; }
+
+  /* seal, tucked in beside the details */
+  if(sealImg){
+    const box = fitBox({w:sealImg.naturalWidth, h:sealImg.naturalHeight}, LOGO_W, LOGO_W, 1);
+    g.drawImage(sealImg, TEXT_CELL, row1H + (row2H - box.h)/2, box.w, box.h);
+  }
+
+  return c;
+}
+
+function saveMsg(html){
+  $('saveMsg').innerHTML = html ? `<div class="note">${html}</div>` : '';
+}
+
+async function exportImage(kind){
+  saveMsg('');
+  toast('Building the image…');
+
+  const mime = kind === 'jpg' ? 'image/jpeg' : 'image/png';
+  const name = `fullsignature_image_${slug(current.name)}_${slug(current.title)}.${kind}`;
+
+  let canvas;
+  try{
+    /* crossOrigin lets the canvas stay exportable, but only if the image
+       host allows it */
+    canvas = await signatureCanvas(current, 2, true);
+  }catch(err){
+    /* Work out which problem it is: a file that genuinely is not there,
+       or a file that loads fine but will not be shared cross-origin. */
+    let reachable = false;
+    try{ await loadImg(String(err.message), false); reachable = true; }catch(e2){}
+
+    if(reachable){
+      saveMsg(`<b>Saving a picture is not available yet.</b><br>
+        Your browser will not let this page save the photo and seal into an image file.
+        This will start working once the page is set up on the website. Copying your
+        signature works normally in the meantime.`);
+    }else{
+      saveMsg(`<b>One of the images could not be loaded.</b><br>
+        Please let us know, and mention this address:
+        <code>${esc(String(err.message).slice(0,110))}</code>`);
+    }
+    toast('Could not save the picture.');
+    return;
+  }
+
+  try{
+    canvas.toBlob(b => {
+      if(!b){ toast('Could not create the picture.'); return; }
+      download(b, name);
+      toast('Saved ' + name);
+    }, mime, kind === 'jpg' ? 0.95 : undefined);
+  }catch(e){
+    saveMsg(`<b>Saving a picture is not available yet.</b><br>
+      This will start working once the page is set up on the website. Copying your
+      signature works normally in the meantime.`);
+    toast('Could not save the picture.');
+  }
+}
+
+/* ---------- clipboard ---------- */
+let toastTimer;
+function toast(msg){
+  const t = $('toast');
+  t.textContent = msg; t.classList.add('on');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('on'), 3600);
+}
+
+async function copyRich(){
+  const plain = `${current.name}\n${current.title}\nJack and Jill of America, Incorporated\n${current.email}`;
+  try{
+    await navigator.clipboard.write([new ClipboardItem({
+      'text/html':  new Blob([currentHtml], {type:'text/html'}),
+      'text/plain': new Blob([plain], {type:'text/plain'})
+    })]);
+    toast('Copied. Now follow the steps below for your email program.');
+  }catch(e){
+    const holder = document.createElement('div');
+    holder.setAttribute('contenteditable','true');
+    holder.style.cssText = 'position:fixed;left:-9999px;top:0;';
+    holder.innerHTML = currentHtml;
+    document.body.appendChild(holder);
+    const r = document.createRange(); r.selectNodeContents(holder);
+    const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
+    const ok = document.execCommand('copy');
+    sel.removeAllRanges(); holder.remove();
+    toast(ok ? 'Copied. Now follow the steps below for your email program.'
+             : 'Your browser would not allow the copy. Please try Chrome or Edge.');
+  }
+}
+
+/* ---------- wire up ---------- */
+(function init(){
+  const sel = $('preset');
+  ROSTER.forEach((m, i) => {
+    const o = document.createElement('option');
+    o.value = i; o.textContent = `${m.name} — ${m.title}`;
+    sel.appendChild(o);
+  });
+  sel.addEventListener('change', e => { current = ROSTER[+e.target.value]; render(); });
+
+  $('copyRich').addEventListener('click', copyRich);
+  $('savePng').addEventListener('click', () => exportImage('png'));
+  $('saveJpg').addEventListener('click', () => exportImage('jpg'));
+
+  render();
+})();
+</script>
+
+</body></html>
