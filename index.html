@@ -25,6 +25,19 @@ const SETUP = {
 
   iconBase: 'https://www.jackandjillinc.org/wp-content/uploads/',
 
+  /* Folder holding a COPY of every image, sitting next to this file.
+     Used only by Save as PNG / JPG.
+
+     Why it exists: a browser will not let a page save a picture built
+     from images on another domain. The signature itself must keep
+     pointing at jackandjillinc.org -- that is what recipients load, and
+     it has to stay on a domain the organisation controls. But the
+     export needs same-folder copies, so it gets its own set.
+
+     Leave blank to disable; export then falls back to the live URLs and
+     will fail unless this page is served from jackandjillinc.org. */
+  exportBase: 'sig-assets/',
+
   logo: 'https://requestcentral.jackandjillinc.org/wp-content/uploads/2026/04/JJOA_Logo_signature.jpeg',
 
   website:  'www.jackandjillinc.org',
@@ -282,9 +295,7 @@ const ROSTER = [
   <div class="card">
     <h2 class="plain">Need a picture of your signature?</h2>
     <p class="lede">If you need an image of your signature for a slide, a printed
-       document or an approval, you can save one here. This is not for your email
-       signature &mdash; in a picture the email address, phone number and social
-       links stop being clickable.</p>
+       document or an approval, you can save one here.</p>
     <div class="btnrow" style="margin:12px 0 0">
       <button type="button" class="btn quiet" id="savePng">Save as PNG</button>
       <button type="button" class="btn quiet" id="saveJpg">Save as JPG</button>
@@ -535,14 +546,22 @@ function loadImg(src, useCors){
   });
 }
 
+/* Swap a live URL for the same filename in the export folder, when one
+   is configured. Same folder as this page means same origin, which is
+   what makes the canvas exportable. */
+function exportSrc(url){
+  if(!SETUP.exportBase || !url || /^data:/.test(url)) return url;
+  return SETUP.exportBase + url.split('/').pop();
+}
+
 async function signatureCanvas(m, scale, useCors){
   const [photoImg, sealImg, scriptImg] = await Promise.all([
-    m.headshot ? loadImg(m.headshot, useCors) : null,
-    SETUP.logo ? loadImg(SETUP.logo, useCors) : null,
-    m.script   ? loadImg(m.script,   useCors) : null
+    m.headshot ? loadImg(exportSrc(m.headshot), useCors) : null,
+    SETUP.logo ? loadImg(exportSrc(SETUP.logo), useCors) : null,
+    m.script   ? loadImg(exportSrc(m.script),   useCors) : null
   ]);
   const icons = {};
-  for(const k of Object.keys(ICON_FILES)) icons[k] = await loadImg(iconSrc(k), useCors);
+  for(const k of Object.keys(ICON_FILES)) icons[k] = await loadImg(exportSrc(iconSrc(k)), useCors);
 
   const scriptBox = scriptImg
     ? fitBox({w:scriptImg.naturalWidth, h:scriptImg.naturalHeight}, SCRIPT_H, SCRIPT_CELL, 4.7)
